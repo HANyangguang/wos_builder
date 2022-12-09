@@ -19,23 +19,23 @@ def main (sourcefile, year, datadir, data_format):
     count  = 0
     logging.debug("Starting processing {0}".format(sourcefile))
 
-    Pubs_list = []
-    Lang_list = []
-    Head_list = []
-    Subh_list = []
+    # Pubs_list = []
+    # Lang_list = []
+    # Head_list = []
+    # Subh_list = []
     Subj_list = []
-    Publ_list = []
+    # Publ_list = []
     Auth_list = []
     Inst_list = []
     NaIn_list = []
-    Edit_list = []
-    Refs_list = []
-    Ftxt_list = []
-    Fund_list = []
+    # Edit_list = []
+    # Refs_list = []
+    # Ftxt_list = []
+    # Fund_list = []
     Keyw_list = []
     Keyp_list = []
-    Conf_list = []
-    CoSp_list = []
+    # Conf_list = []
+    # CoSp_list = []
     
     with open(args.sourcefile, 'r') as data:
 
@@ -54,17 +54,18 @@ def main (sourcefile, year, datadir, data_format):
                 REC    = ET.fromstring(record)
                 wos_id = list(REC.iterfind('UID'))[0].text
             
-                Pub, Languages, Headings, Subheadings, Subjects    = x.extract_pub_info(wos_id, REC)
-                Pubs_list.extend(Pub)
-                Lang_list.extend(Languages)
-                Head_list.extend(Headings)
-                Subh_list.extend(Subheadings)
+                # Pub, Languages, Headings, Subheadings, Subjects    = x.extract_pub_info(wos_id, REC)
+                _, _, _, Subheadings, Subjects    = x.extract_pub_info(wos_id, REC)
+                # Pubs_list.extend(Pub)
+                # Lang_list.extend(Languages)
+                # Head_list.extend(Headings)
+                # Subh_list.extend(Subheadings)
                 Subj_list.extend(Subjects)
 
-                """
+                
                 #print pub
-                Publishers = x.extract_publisher(wos_id, REC)
-                Publ_list.extend(Publishers)
+                # Publishers = x.extract_publisher(wos_id, REC)
+                # Publ_list.extend(Publishers)
             
             
                 #print publisher
@@ -78,19 +79,20 @@ def main (sourcefile, year, datadir, data_format):
                 #print len(Inst_list), Institutions
                 #print len(NaIn_list), Name_inst_relation
                 
-                Editions = x.extract_editions(wos_id, REC)
-                Edit_list.extend(Editions)
+                # Editions = x.extract_editions(wos_id, REC)
+                # Edit_list.extend(Editions)
 
-                References = x.extract_references(wos_id, REC)
-                Refs_list.extend(References)
-                                
-                Ftext, Funding = x.extract_funding(wos_id, REC)
-                Ftxt_list.extend(Ftext)
-                Fund_list.extend(Funding)
                 
-                Conf, Sponsor  = x.extract_conferences(wos_id, REC)
-                Conf_list.extend(Conf)
-                CoSp_list.extend(Sponsor)
+                # References = x.extract_references(wos_id, REC)
+                # Refs_list.extend(References)
+                                
+                # Ftext, Funding = x.extract_funding(wos_id, REC)
+                # Ftxt_list.extend(Ftext)
+                # Fund_list.extend(Funding)
+                
+                # Conf, Sponsor  = x.extract_conferences(wos_id, REC)
+                # Conf_list.extend(Conf)
+                # CoSp_list.extend(Sponsor)
                 #print len(Conf_list), Conf
                 #print len(CoSp_list), Sponsor
             
@@ -98,7 +100,6 @@ def main (sourcefile, year, datadir, data_format):
                 Keyw_list.extend(Keywords)
                 Keyp_list.extend(Keywords_plus)
                 #print Keywords
-                """
             except Exception as e:
                 print "[ERROR:{0}] Caught an exception : {1}".format(wos_id, e)
                 pass
@@ -106,26 +107,24 @@ def main (sourcefile, year, datadir, data_format):
 
                 
     try :
-        x.dump(Pubs_list,    h_source,       t_source,         year+'source',       '{0}/source.{1}'.format(datadir, data_format),     data_format=data_format)
-        """
-        x.dump(Edit_list,    h_editions,       t_editions,         year+'editions',       '{0}/editions.{1}'.format(datadir, data_format),     data_format=data_format)
-        x.dump(Ftxt_list,    h_fundingtexts,   t_fundingtexts,     year+'fundingtext',    '{0}/fundingtext.{1}'.format(datadir, data_format),  data_format=data_format)
-        x.dump(Fund_list,    h_funding,        t_funding,          year+'funding',        '{0}/funding.{1}'.format(datadir, data_format),      data_format=data_format)
+        # x.dump(Pubs_list,    h_source,       t_source,         year+'source',       '{0}/source.{1}'.format(datadir, data_format),     data_format=data_format)
+        # x.dump(Edit_list,    h_editions,       t_editions,         year+'editions',       '{0}/editions.{1}'.format(datadir, data_format),     data_format=data_format)
+        # x.dump(Ftxt_list,    h_fundingtexts,   t_fundingtexts,     year+'fundingtext',    '{0}/fundingtext.{1}'.format(datadir, data_format),  data_format=data_format)
+        # x.dump(Fund_list,    h_funding,        t_funding,          year+'funding',        '{0}/funding.{1}'.format(datadir, data_format),      data_format=data_format)
         x.dump(Keyw_list,    h_keywords,       t_keywords,         year+'keywords',       '{0}/keywords.{1}'.format(datadir, data_format),     data_format=data_format)
         x.dump(Keyp_list,    h_keywords_plus,  t_keywords_plus,    year+'keywords_plus',  '{0}/keywords_plus.{1}'.format(datadir, data_format),data_format=data_format)
-        x.dump(Conf_list,    h_conferences,    t_conferences,      year+'conferences',    '{0}/conferences.{1}'.format(datadir, data_format),  data_format=data_format)
-        x.dump(CoSp_list,    h_conf_sponsors,  t_conf_sponsors,    year+'confSponsors',   '{0}/confSponsors.{1}'.format(datadir, data_format), data_format=data_format)
-        x.dump(Refs_list,    h_references,     t_references,       year+'refs',           '{0}/references.{1}'.format(datadir, data_format),   data_format=data_format)
-        x.dump(Pubs_list,    h_publications,   t_publications,     year+'publications',   '{0}/publications.{1}'.format(datadir, data_format), data_format=data_format)
-        x.dump(Lang_list,    h_languages,      t_languages,        year+'languages',      '{0}/langauges.{1}'.format(datadir, data_format),    data_format=data_format)
-        x.dump(Head_list,    h_headings,       t_headings,         year+'headings',       '{0}/headings.{1}'.format(datadir, data_format),     data_format=data_format)
-        x.dump(Subh_list,    h_subheadings,    t_subheadings,      year+'subheadings',    '{0}/subheadings.{1}'.format(datadir, data_format),  data_format=data_format)
+        # x.dump(Conf_list,    h_conferences,    t_conferences,      year+'conferences',    '{0}/conferences.{1}'.format(datadir, data_format),  data_format=data_format)
+        # x.dump(CoSp_list,    h_conf_sponsors,  t_conf_sponsors,    year+'confSponsors',   '{0}/confSponsors.{1}'.format(datadir, data_format), data_format=data_format)
+        # x.dump(Refs_list,    h_references,     t_references,       year+'refs',           '{0}/references.{1}'.format(datadir, data_format),   data_format=data_format)
+        # x.dump(Pubs_list,    h_publications,   t_publications,     year+'publications',   '{0}/publications.{1}'.format(datadir, data_format), data_format=data_format)
+        # x.dump(Lang_list,    h_languages,      t_languages,        year+'languages',      '{0}/langauges.{1}'.format(datadir, data_format),    data_format=data_format)
+        # x.dump(Head_list,    h_headings,       t_headings,         year+'headings',       '{0}/headings.{1}'.format(datadir, data_format),     data_format=data_format)
+        # x.dump(Subh_list,    h_subheadings,    t_subheadings,      year+'subheadings',    '{0}/subheadings.{1}'.format(datadir, data_format),  data_format=data_format)
         x.dump(Subj_list,    h_subjects,       t_subjects,         year+'subjects',       '{0}/subjects.{1}'.format(datadir, data_format),     data_format=data_format)
-        x.dump(Publ_list,    h_publishers,     t_publishers,       year+'publishers',     '{0}/publishers.{1}'.format(datadir, data_format),   data_format=data_format)
+        # x.dump(Publ_list,    h_publishers,     t_publishers,       year+'publishers',     '{0}/publishers.{1}'.format(datadir, data_format),   data_format=data_format)
         x.dump(Auth_list,    h_contributors,   t_contributors,     year+'contributors',   '{0}/contributors.{1}'.format(datadir, data_format), data_format=data_format)
         x.dump(Inst_list,    h_institutions,   t_institutions,     year+'institutions',   '{0}/institutions.{1}'.format(datadir, data_format), data_format=data_format)
         x.dump(NaIn_list,    h_name_inst,      t_name_inst,        year+'affiliations',   '{0}/affiliations.{1}'.format(datadir, data_format), data_format=data_format)
-        """
     except Exception as e:
         print "[ERROR] Dumping failed for {0}".format(sourcefile)
         logging.error("[ERROR] Dumping failed for {0}".format(sourcefile))

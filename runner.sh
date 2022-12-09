@@ -33,10 +33,10 @@ extract_data() {
 	    for sql in $(echo ../sqldata/*sql)
 	    do
 		echo "Loading file $sql extracted from $xml to wos2"
-		mysql -h wos2.cvirc91pe37a.us-east-1.rds.amazonaws.com \
+		mysql -h msicollab.mysql.database.azure.com \
 		      -P 3306 \
-		      -u $wosuser \
-		      -p$wospasswd < $sql
+		      -u gatech2022Admin \
+		      -p EmilyRamYangRobLew02 < $sql
 	    done
 	done
 
@@ -83,21 +83,22 @@ DROP TABLE IF EXISTS $1subheadings  ;
 DROP TABLE IF EXISTS $1subjects     ;
 EOF
     echo "Dropping all tables with $1 prefix"
-    mysql -h wos2.cvirc91pe37a.us-east-1.rds.amazonaws.com \
+    mysql -h msicollab.mysql.database.azure.com \
 	  -P 3306 \
-	  -u $wosuser \
-	  -p$wospasswd < flush.sql
+	  -u gatech2022Admin \
+	  -pEmilyRamYangRobLew02 < flush.sql
 }
 
 
 # Install packages
-installs
+#installs
 # Setup the data files
 setup_data
 
 # Flush the DB for this year's tables
 year=$(get_year)
-#flush_db $year
+echo "year: $year"
+flush_db $year
 
 # Extract and dump data to DB
 extract_data sql
