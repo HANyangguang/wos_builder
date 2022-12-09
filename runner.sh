@@ -36,7 +36,7 @@ extract_data() {
 		mysql -h msicollab.mysql.database.azure.com \
 		      -P 3306 \
 		      -u gatech2022Admin \
-		      -p EmilyRamYangRobLew02 < $sql
+		      -pEmilyRamYangRobLew02 < $sql
 	    done
 	done
 
